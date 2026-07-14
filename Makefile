@@ -20,7 +20,8 @@ CFLAGS  += --disable-warning 126 # unreachable code
 CFLAGS  += --disable-warning 190 # empty translation unit
 LDFLAGS := --out-fmt-ihx
 
-CFILES = core/main.c
+CFILES  = core/main.c
+CFILES += core/delay.c
 
 OBJFILES := $(patsubst %.c, $(BUILD)/%.rel, $(CFILES))
 
