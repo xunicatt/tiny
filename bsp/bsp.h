@@ -10,7 +10,7 @@
 // #include "awu.h"    /* Auto Wake-up Unit */
 // #include "beep.h"   /* Beeper */
 // #include "cfg.h"    /* Global Configuration (SWIM disable) */
-// #include "clk.h"    /* Clock Controller */
+#include "clk.h"    /* Clock Controller */
 // #include "exti.h"   /* External Interrupt Controller */
 // #include "flash.h"  /* Flash and EEPROM */
 // #include "gpio.h"   /* General Purpose I/O (GPIOA-D) */
