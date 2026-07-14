@@ -1,0 +1,4 @@
+CompileFlags:
+  Add: [-ffreestanding]
+  Remove: [-mstm8, --opt-code-size, --disable-warning]
+  Compiler: sdcc
