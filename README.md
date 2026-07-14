@@ -1,3 +1,8 @@
+<!-- SPDX-License-Identifier: GPL-2.0 -->
+<!-- Author: xunicatt -->
+<!-- Project: tiny  -->
+<!-- Copyright (c) 2026 xunicatt <contact.aniket.biswas@gmail.com> -->
+
 # tiny
 
 A tiny clock made for fun!
