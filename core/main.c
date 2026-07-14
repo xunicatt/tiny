@@ -4,6 +4,7 @@
 // Copyright (c) 2026 xunicatt <contact.aniket.biswas@gmail.com>
 
 #include <stdbool.h>
+#include <core/irq.h>
 
 void main(void)
 {
