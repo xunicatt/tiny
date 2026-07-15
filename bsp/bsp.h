@@ -13,7 +13,7 @@
 #include "clk.h"    /* Clock Controller */
 // #include "exti.h"   /* External Interrupt Controller */
 // #include "flash.h"  /* Flash and EEPROM */
-// #include "gpio.h"   /* General Purpose I/O (GPIOA-D) */
+#include "gpio.h"   /* General Purpose I/O (GPIOA-D) */
 // #include "i2c.h"    /* I2C */
 // #include "itc.h"    /* Interrupt Controller */
 // #include "iwdg.h"   /* Independent Watchdog */
