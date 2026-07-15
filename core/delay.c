@@ -10,30 +10,30 @@ static uint16_t ms;
 
 void delay_init(void)
 {
-    // enable timer 1 clock
+    // A1. Enable timer 1 clock
     CLK->PCKENR1 |= CLK_PCKENR1_TIM1;
 
-    // disable timer 1
+    // B1. Disable timer 1
     TIM1->CR1 &= ~TIM1_CR1_CEN;
 
-    // 1Mhz
+    // B2. Set prescaler to 16 (15 + 1) for 1 Mhz
     TIM1->PSCRH = 0x00;
     TIM1->PSCRL = 0x0F;
 
-    // 999
+    // B3. Set auto reload to 999 (0 - 999 = 1000 steps)
     TIM1->ARRH = 0x03;
     TIM1->ARRL = 0xE7;
 
-    // reset counter
+    // B4. Reset counter
     TIM1->CNTRH = 0;
     TIM1->CNTRL = 0;
 
-    // enable auto reload
+    // B5. Enable auto reload
     TIM1->CR1 |= TIM1_CR1_ARPE;
-    // enable interrups for arr update
+    // B6. Enable interrups for ARR update
     TIM1->IER |= TIM1_IER_UIE;
 
-    // enable timer 1
+    // B7. Enable timer 1
     TIM1->CR1 |= TIM1_CR1_CEN;
 
     ms = 0;
@@ -42,15 +42,17 @@ void delay_init(void)
 void delay_us(uint16_t us)
 {
     const uint16_t start = micros();
-    while ((micros() - start) < us)
+    while ((micros() - start) < us) {
         nop();
+    }
 }
 
 void delay_ms(uint16_t ms)
 {
     const uint16_t start = millis();
-    while ((millis() - start) < ms)
+    while ((millis() - start) < ms) {
         nop();
+    }
 }
 
 uint16_t micros(void)
