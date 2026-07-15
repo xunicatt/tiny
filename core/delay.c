@@ -17,16 +17,16 @@ void delay_init(void)
     TIM1->CR1 &= ~TIM1_CR1_CEN;
 
     // 1Mhz
-    TIM1->PSCRL = 0x00;
-    TIM1->PSCRH = 0x0F;
+    TIM1->PSCRH = 0x00;
+    TIM1->PSCRL = 0x0F;
 
     // 999
-    TIM1->ARRL = 0xE7;
     TIM1->ARRH = 0x03;
+    TIM1->ARRL = 0xE7;
 
     // reset counter
-    TIM1->CNTRL = 0;
     TIM1->CNTRH = 0;
+    TIM1->CNTRL = 0;
 
     // enable auto reload
     TIM1->CR1 |= TIM1_CR1_ARPE;
