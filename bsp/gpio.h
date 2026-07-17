@@ -34,7 +34,7 @@ enum : uint8_t {
 #define GPIOD ((gpio_t *)0x500F)
 
 /* Pins */
-enum : uint8_t {
+typedef enum : uint8_t {
     GPIO_PIN_0 = BIT(0),
     GPIO_PIN_1 = BIT(1),
     GPIO_PIN_2 = BIT(2),
@@ -43,7 +43,7 @@ enum : uint8_t {
     GPIO_PIN_5 = BIT(5),
     GPIO_PIN_6 = BIT(6),
     GPIO_PIN_7 = BIT(7),
-};
+} gpio_pin_t;
 
 /* Field values */
 typedef enum : uint8_t {
@@ -57,7 +57,7 @@ typedef enum : uint8_t {
     GPIO_MODE_OUT_PP_FAST = 0x7,
 } gpio_mode_t;
 
-static inline void gpio_init(gpio_t *port, uint8_t pin, gpio_mode_t mode)
+static inline void gpio_init(gpio_t *port, gpio_pin_t pin, gpio_mode_t mode)
 {
     if (mode & BIT(2))
         port->DDR |= pin;
@@ -75,14 +75,14 @@ static inline void gpio_init(gpio_t *port, uint8_t pin, gpio_mode_t mode)
         port->CR2 &= ~pin;
 }
 
-static inline void gpio_deinit(gpio_t *port, uint8_t pin)
+static inline void gpio_deinit(gpio_t *port, gpio_pin_t pin)
 {
     port->DDR &= ~pin;
     port->CR1 &= ~pin;
     port->CR2 &= ~pin;
 }
 
-static inline void gpio_pin_set(gpio_t *port, uint8_t pin, bool value)
+static inline void gpio_pin_set(gpio_t *port, gpio_pin_t pin, bool value)
 {
     if (value)
         port->ODR |= pin;
@@ -90,12 +90,12 @@ static inline void gpio_pin_set(gpio_t *port, uint8_t pin, bool value)
         port->ODR &= ~pin;
 }
 
-static inline void gpio_pin_toggle(gpio_t *port, uint8_t pin)
+static inline void gpio_pin_toggle(gpio_t *port, gpio_pin_t pin)
 {
     port->ODR ^= pin;
 }
 
-static inline bool gpio_pin_get(gpio_t *port, uint8_t pin)
+static inline bool gpio_pin_get(gpio_t *port, gpio_pin_t pin)
 {
     return (port->IDR & pin) != 0;
 }
