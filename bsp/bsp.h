@@ -21,7 +21,7 @@
 // #include "rst.h"    /* Reset Controller */
 // #include "spi.h"    /* SPI */
 #include "tim1.h"   /* TIM1 (16-bit, advanced, complementary PWM) */
-// #include "tim2.h"   /* TIM2 (16-bit, general purpose, 3 channels) */
+#include "tim2.h"   /* TIM2 (16-bit, general purpose, 3 channels) */
 // #include "tim4.h"   /* TIM4 (8-bit, basic) */
 // #include "uart1.h"  /* UART1 */
 // #include "wwdg.h"   /* Window Watchdog */
