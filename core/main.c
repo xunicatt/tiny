@@ -7,6 +7,7 @@
 #include <core/irq.h>
 #include <core/delay.h>
 #include <stdbool.h>
+#include <drivers/statusled.h>
 
 static void sysclock_init(void);
 
@@ -14,8 +15,11 @@ void main(void)
 {
     sysclock_init();
     delay_init();
+    status_led_init();
+    status_led_set_brightness(STATUS_LED_ALL, 100);
 
     while (true) {
+        status_led_toggle(STATUS_LED_ALL);
         delay_ms(1000);
     }
 }
