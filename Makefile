@@ -11,35 +11,66 @@ TARGET := $(NAME)-v$(VERSION).$(PATCH).ihx
 BUILD  := build
 
 CC    := sdcc
+AS    := sdasstm8
 FLASH := stm8flash
+DCE   := stm8dce
 
 CSTD    := --std=c23
-CFLAGS   = -mstm8 --opt-code-size
+CFLAGS  ?=
+CFLAGS  += --Werror
+CFLAGS  += -mstm8 --opt-code-size
 CFLAGS  += $(CSTD) -I.
 CFLAGS  += --disable-warning 126 # unreachable code
 CFLAGS  += --disable-warning 190 # empty translation unit
-LDFLAGS := --out-fmt-ihx
+LDFLAGS ?=
+LDFLAGS += --out-fmt-ihx
+
+VERBOSE ?= no
+Q = @
+
+ifeq ($(VERBOSE),yes)
+	Q =
+endif
 
 CFILES  = core/main.c core/delay.c
 CFILES += drivers/statusled.c
 
-OBJFILES := $(patsubst %.c, $(BUILD)/%.rel, $(CFILES))
+ASMDIR := $(BUILD)/asm
+DCEDIR := $(BUILD)/dce
+OBJDIR := $(BUILD)/obj
+
+ASMFILES := $(patsubst %.c, $(ASMDIR)/%.asm, $(CFILES))
+OBJFILES := $(patsubst %.c, $(OBJDIR)/%.rel, $(notdir $(CFILES)))
 
 .PHONY: all clean
 
 all: $(BUILD)/$(TARGET)
 
-$(BUILD)/%.rel: %.c
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c -o $@ $<
-	@echo "CC: $@"
+# Stage 1: Compiles (C -> ASM)
+$(ASMDIR)/%.asm: %.c
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) $(CFLAGS) -S -o $@ $<
+	@echo "CC  : $@"
 
-$(BUILD)/$(TARGET): $(OBJFILES)
-	@$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^
-	@echo "LD: $@"
+# Stage 2: Removes dead codes (ASMs -> ASMs)
+dce: $(ASMFILES)
+	@echo "DCE : Optimizing"
+	$(Q)mkdir -p $(DCEDIR)
+	$(Q)$(DCE) -o $(DCEDIR) $^
+
+# Stage 3: Assembly to Object file (ASM -> REL)
+$(OBJDIR)/%.rel: $(DCEDIR)/%.asm
+	$(Q)mkdir -p $(OBJDIR)
+	$(Q)$(AS) -plosgffw $@ $<
+	@echo "AS  : $@"
+
+# Stage 4: Final firmware generation (RELs -> IHX)
+$(BUILD)/$(TARGET): dce $(OBJFILES)
+	$(Q)$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJFILES)
+	@echo "LD  : $@"
 
 clean:
-	@rm -rf $(BUILD)
+	$(Q)rm -rf $(BUILD)
 
 flash: $(BUILD)/$(TARGET)
-	@$(FLASH) -c stlinkv2 -p stm8s103?3 -w $<
+	$(Q)$(FLASH) -c stlinkv2 -p stm8s103?3 -w $<
