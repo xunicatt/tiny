@@ -4,10 +4,10 @@
 // Copyright (c) 2026 xunicatt <contact.aniket.biswas@gmail.com>
 
 #include <bsp/bsp.h>
-#include <core/irq.h>
 #include <core/delay.h>
-#include <stdbool.h>
+#include <core/irq.h>
 #include <drivers/statusled.h>
+#include <stdbool.h>
 
 static void sysclock_init(void);
 

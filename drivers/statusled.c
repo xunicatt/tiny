@@ -3,8 +3,7 @@
 // Project: tiny 
 // Copyright (c) 2026 xunicatt <contact.aniket.biswas@gmail.com>
 
-#include "bsp/gpio.h"
-#include "bsp/tim2.h"
+#include <bsp/bsp.h>
 #include <device/tiny.h>
 #include <drivers/statusled.h>
 
