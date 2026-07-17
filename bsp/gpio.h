@@ -46,7 +46,7 @@ enum : uint8_t {
 };
 
 /* Field values */
-enum : uint8_t {
+typedef enum : uint8_t {
     GPIO_MODE_IN_FLT      = 0x0,
     GPIO_MODE_IN_FLT_IT   = 0x1,
     GPIO_MODE_IN_PU       = 0x2,
@@ -55,9 +55,9 @@ enum : uint8_t {
     GPIO_MODE_OUT_OD_FAST = 0x5,
     GPIO_MODE_OUT_PP      = 0x6,
     GPIO_MODE_OUT_PP_FAST = 0x7,
-};
+} gpio_mode_t;
 
-static inline void gpio_init(gpio_t *port, uint8_t pin, uint8_t mode)
+static inline void gpio_init(gpio_t *port, uint8_t pin, gpio_mode_t mode)
 {
     if (mode & BIT(2))
         port->DDR |= pin;
